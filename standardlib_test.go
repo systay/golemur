@@ -3,12 +3,19 @@ package golemur
 import (
 	"fmt"
 	"go/ast"
+	"go/parser"
 	"go/token"
 	"strconv"
 	"testing"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStandardLib(t *testing.T) {
+	fset := token.NewFileSet() // positions are relative to fset
+
+	f, err := parser.ParseFile(fset, "/Users/systay/dev/go/src/github.com/vitessio/vitess/go/vt/sqlparser/ast.go", nil, 0)
+	require.NoError(t, err)
+	fmt.Println(f)
 	var s StandardLibConstantFolder
 	input := smallExpression()
 	ast.Walk(s, input)
